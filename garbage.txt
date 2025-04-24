@@ -1,0 +1,30 @@
+
+func (rep *DocumentRepository) FindAllByUser(userId string) ([]*document.Document, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+	var result []*document.Document
+	var data []document.DocAuthor
+	var documentIds []string
+	docAuthorTypeCollection := rep.db.Collection("doc_author")
+
+	cursor, err := docAuthorTypeCollection.Find(ctx, bson.M{"user_id": userId})
+	if err != nil {
+		return nil, err
+	}
+	defer cursor.Close(ctx)
+	if err := cursor.All(ctx, &data); err != nil {
+		return nil, err
+	}
+	for i := range data {
+		documentIds = append(documentIds, data[i].DocumentID)
+	}
+	fmt.Println(documentIds[0])
+	var object document.Document
+	err = rep.collection.FindOne(ctx, bson.M{"_id": "67b45a994d58d6b26bdd7d41"}).Decode(&object)
+	if err != nil {
+		return result, err
+	}
+	fmt.Println(object)
+
+	return result, nil
+}
