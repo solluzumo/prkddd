@@ -31,11 +31,15 @@ import (
 
 type App struct {
 	Config   *config.Config
-	DB       *mongo.Database
+	DB       DataBaseConf
 	Repos    *Repositories
 	Services *Services
 	Handlers *Handlers
 	IDGen    idgenR.UUIDGenerator
+}
+
+type DataBaseConf struct {
+	DB *mongo.Database
 }
 
 type Handlers struct {

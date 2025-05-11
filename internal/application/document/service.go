@@ -111,7 +111,7 @@ func (s *DocumentService) CreateDocument(ctx context.Context, token string, dto 
 	now := time.Now().Format(time.RFC3339)
 	document := document.Document{
 		ID:               s.uuidGen.New(),
-		DocumentType:     docType.ID,
+		DocumentType:     docType.DocTypeID,
 		Title:            dto.Title,
 		Date:             formattedDate,
 		CreatedAt:        now,
@@ -160,9 +160,7 @@ func (s *DocumentService) FindDocumentByName(filesName string) (*document.Docume
 
 func (s *DocumentService) FindDocuments(ctx context.Context, dto ListDoucmentDTO) ([]*document.Document, int64, error) {
 	//проверять не пусты ли фильтры и сортировки и вызывать разные методы бд
-	if len(dto.Filters)!=0{
-		return s.docRepo.
-	}
+	fmt.Println(dto.Filters, dto.Limit, dto.SortField, dto.SortOrder)
 	return s.docRepo.FindDocuments()
 }
 
